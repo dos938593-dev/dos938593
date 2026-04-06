@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Прожектор — Афиша кино{% endblock %}
+
+{% block content %}
+<h1>
+    <i class="fas fa-calendar-alt"></i> Афиша кино
+</h1>
+
+<!-- Сетка фильмов -->
+<div class="movies-grid">
+    {% for movie in movies %}
+    <div class="movie-card" onclick="location.href='{{ url_for('movie_detail', movie_id=movie.id) }}'">
+        <div class="movie-poster">
+            {% if movie.poster_url %}
+            <img src="{{ movie.poster_url }}" alt="{{ movie.title }}" loading="lazy">
+            {% else %}
+            <div style="width:100%; height:100%; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem;">
+                <i class="fas fa-film" style="font-size: 3rem; color: var(--text-muted);"></i>
+                <span style="color: var(--text-muted);">Нет постера</span>
+            </div>
+            {% endif %}
+            
+            {% if movie.is_premiere %}
+            <div class="movie-badge">
+                <i class="fas fa-star"></i> Премьера
+            </div>
+            {% endif %}
+            
+            {% if movie.rating_imdb and movie.rating_imdb > 0 %}
+            <div class="movie-rating">
+                <i class="fas fa-star"></i> {{ movie.rating_imdb }}
+            </div>
+            {% endif %}
+            
+            <div class="movie-age">{{ movie.age_restriction }}</div>
+        </div>
+        
+        <div class="movie-info">
+            <div class="movie-title">{{ movie.title }}</div>
+            {% if movie.original_title %}
+            <div class="movie-title-original">{{ movie.original_title }}</div>
+            {% endif %}
+            
+            <div class="movie-meta">
+                <span><i class="fas fa-calendar"></i> {{ movie.year }}</span>
+                <span><i class="fas fa-clock"></i> {{ movie.duration }} мин</span>
+            </div>
+            
+            <div class="movie-genre">
+                <i class="fas fa-tag"></i> {{ movie.genre[:50] }}{% if movie.genre|length > 50 %}...{% endif %}
+            </div>
+            
+            <!-- Быстрое расписание -->
+            <div class="movie-schedule">
+                {% set ns = namespace(shown=0) %}
+                {% for screening in movie.screenings %}
+                    {% if ns.shown < 3 %}
+                        {% if screening.date == dates[0].date %}
+                        <span class="schedule-time">{{ screening.time }}</span>
+                        {% set ns.shown = ns.shown + 1 %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                
+                {% if movie.screenings|length > 3 %}
+                <span class="schedule-time">+{{ movie.screenings|length - 3 }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('date-filter').addEventListener('change', applyFilters);
+document.getElementById('cinema-filter').addEventListener('change', applyFilters);
+document.getElementById('genre-filter').addEventListener('change', applyFilters);
+
+function applyFilters() {
+    const date = document.getElementById('date-filter').value;
+    const cinema = document.getElementById('cinema-filter').value;
+    const genre = document.getElementById('genre-filter').value;
+    
+    window.location.href = `/?date=${date}&cinema=${cinema}&genre=${genre}`;
+}
+</script>
+{% endblock %}

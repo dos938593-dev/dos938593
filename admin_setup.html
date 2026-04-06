@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Настройка администратора — Прожектор{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto; text-align: center;">
+    <div class="admin-panel">
+        <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success); margin-bottom: 1rem;"></i>
+        
+        <h2 style="margin-bottom: 1rem;">Администратор создан!</h2>
+        
+        <div style="background: var(--bg-primary); padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem;">
+            <p><strong>Логин:</strong> admin</p>
+            <p><strong>Пароль:</strong> admin123</p>
+        </div>
+        
+        <div class="flash-message warning" style="margin-bottom: 2rem;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>Важно!</strong> Удалите или закомментируйте маршрут <code>/admin/setup</code> после первого входа!
+        </div>
+        
+        <a href="{{ url_for('admin_login') }}" class="btn btn-primary">
+            <i class="fas fa-sign-in-alt"></i> Перейти к входу
+        </a>
+    </div>
+</div>
+{% endblock %}

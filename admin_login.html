@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Вход для администратора — Прожектор{% endblock %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 0 auto;">
+    <h1>
+        <i class="fas fa-lock"></i> Вход для администратора
+    </h1>
+    
+    <div class="admin-panel">
+        <form method="POST">
+            <div class="form-group">
+                <label><i class="fas fa-user"></i> Логин</label>
+                <input type="text" name="username" class="form-control" placeholder="Введите логин" required>
+            </div>
+            
+            <div class="form-group">
+                <label><i class="fas fa-key"></i> Пароль</label>
+                <input type="password" name="password" class="form-control" placeholder="Введите пароль" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-sign-in-alt"></i> Войти
+            </button>
+        </form>
+        
+        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted);">
+            <p><i class="fas fa-info-circle"></i> Для первого входа:</p>
+            <p>Логин: <strong>admin</strong><br>Пароль: <strong>admin123</strong></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}{{ movie.title }} — Прожектор{% endblock %}
+
+{% block content %}
+<div class="movie-page">
+    <div class="movie-page-poster">
+        {% if movie.poster_url %}
+        <img src="{{ movie.poster_url }}" alt="{{ movie.title }}">
+        {% else %}
+        <div style="aspect-ratio: 2/3; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem;">
+            <i class="fas fa-film" style="font-size: 4rem; color: var(--text-muted);"></i>
+            <span style="color: var(--text-muted);">Нет постера</span>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="movie-page-info">
+        <h1>{{ movie.title }}</h1>
+        {% if movie.original_title %}
+        <div class="movie-page-original">{{ movie.original_title }}</div>
+        {% endif %}
+        
+        <div class="movie-page-details">
+            <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-calendar"></i> Год</span>
+                <span class="detail-value">{{ movie.year }}</span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-globe"></i> Страна</span>
+                <span class="detail-value">{{ movie.country or '—' }}</span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-user"></i> Режиссёр</span>
+                <span class="detail-value">{{ movie.director or '—' }}</span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-clock"></i> Длительность</span>
+                <span class="detail-value">{{ movie.duration }} мин</span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-tags"></i> Жанр</span>
+                <span class="detail-value">{{ movie.genre or '—' }}</span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-child"></i> Возраст</span>
+                <span class="detail-value">{{ movie.age_restriction }}</span>
+            </div>
+            
+            {% if movie.rating_imdb and movie.rating_imdb > 0 %}
+            <div class="detail-item">
+                <span class="detail-label"><i class="fab fa-imdb"></i> IMDb</span>
+                <span class="detail-value">⭐ {{ movie.rating_imdb }}</span>
+            </div>
+            {% endif %}
+            
+            {% if movie.rating_kinopoisk and movie.rating_kinopoisk > 0 %}
+            <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-star"></i> Кинопоиск</span>
+                <span class="detail-value">⭐ {{ movie.rating_kinopoisk }}</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if movie.cast %}
+        <div style="margin-bottom: 2rem;">
+            <strong><i class="fas fa-users"></i> В ролях:</strong>
+            <p style="margin-top: 0.5rem; color: var(--text-secondary);">{{ movie.cast }}</p>
+        </div>
+        {% endif %}
+        
+        <div class="movie-page-description">
+            <strong><i class="fas fa-align-left"></i> О фильме:</strong>
+            <p style="margin-top: 1rem;">{{ movie.description or 'Описание отсутствует' }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
